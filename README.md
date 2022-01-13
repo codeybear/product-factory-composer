@@ -5,9 +5,10 @@
 [data model diagram](https://github.com/OpenUnited/product-factory-composer/blob/master/docs/diagrams/openunited-data-model%20v1.0.png)
 
 ## Design Choices
+
 A concept called "ProductTree" defines what a product does. The ProductTree comprises a set of nested Capabilities in a tree-like structure. ProductTree helps to ensure that people understand what a product does, which sounds obvious however to date frameworks have only focussed on the work to be done and not what the product does.
 
-The work to be done on a product is organised separately to the ProductTree but in a related way.  The units of work are defined as Tasks, and these are grouped into Initiatives. 
+The work to be done on a product is organised separately to the ProductTree but in a related way.  The units of work are defined as Tasks, and these are grouped into Initiatives.
 
 Whilst we deliberately separate what the product does (ProductTree) from the work (Initiatives/Tasks) to be done, these are related:
 
@@ -43,9 +44,9 @@ Capability is a way of breaking down the functional and non-functional areas of 
   * Smart Recommentations
   * A/B Testing
   * Serverys
-    
+
 ### Task
-Tasks are units of work to be done. Tasks are grouped into Initiatives and both Tasks and Initiatives relate to a capability in the ProductMap. 
+Tasks are units of work to be done. Tasks are grouped into Initiatives and both Tasks and Initiatives relate to a capability in the ProductMap.
 
 For example, a Task might be: As a user, I want to be able to tag contacts. Implement the ability for contacts to be tagged in the UI and backend.
 
@@ -60,6 +61,12 @@ For example, an Initiative might be: Create new Admin Console
 ```
 git submodule init
 git submodule update
+```
+
+NOTE: `git submodule update` clones using SSH links. If you are having trouble with the command manually - e.g. you haven't [set-up SSH keys](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) in your GitHub account - clone using HTTPS links:
+```
+git clone https://github.com/OpenUnited/product-factory-backend.git backend
+git clone https://github.com/OpenUnited/product-factory-frontend.git frontend
 ```
 
 2. Create backend/.env file from backend/.env.template and update the file variables with your information.
@@ -89,10 +96,13 @@ docker-compose exec backend python manage.py createsuperuser
 7. The admin panel is available [http://0.0.0.0:8080/admin](http://0.0.0.0:8080/admin)
 
 8. The application works in development mode (max 2 products & 5 users/persons).
-Set license value in `LICENSE_TRIAL_KEY` variable and run the `python manage.py create_trial_license` command to create a trial license.
+The server requires two license files to be present before you can run it. You can find the developer license files in the `backend` repository. They are `developer.license` and `developer.license_key.pub`. You need to point to these two files in the `.env` file. Corresponding env variable names are `LICENSE_FILE` and `LICENSE_PUB_KEY`. After you make the changes, the last two lines of your `.env` file should be like this:
+```
+LICENSE_FILE=developer.license
+LICENSE_PUB_KEY=developer.license_key.pub
+```
 
-
-if after starting the project in the console the error is: "Invalid HTTP_HOST header: 'localhost:8000'. You may need to add 'localhost' to ALLOWED_HOSTS", and frontend crashes after first render.
+If after starting the project in the console the error is: "Invalid HTTP_HOST header: 'localhost:8000'. You may need to add 'localhost' to ALLOWED_HOSTS", and frontend crashes after first render.
 1. Create a local_settings.py under product-factory-composer/backend/backend folder.
 2. Add the following codes.
 ```
@@ -123,6 +133,7 @@ docker-compose exec frontend npm test
 ```
 
 ## Github integration
+
 1. Create a local_settings.py under backend/backend folder.
 2. Add the following codes.
 ```
