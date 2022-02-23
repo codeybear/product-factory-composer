@@ -27,6 +27,44 @@ services:
       - envoymesh
     env_file:
       - backend/.env
+   
+  notification_worker:
+    build:
+      context: ./
+      dockerfile: docker-compose/notification-worker/Dockerfile
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - backend
+      - rabbitmq
+    networks:
+      - envoymesh
+      
+  email_sender:
+    build:
+      context: ./
+      dockerfile: docker-compose/email-sender/Dockerfile
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - backend
+      - rabbitmq
+    networks:
+      - envoymesh
+   
+  celery_monitor:
+    build:
+      context: ./
+      dockerfile: docker-compose/flower-worker/Dockerfile
+    ports:
+      - 5555:5555
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - backend
+      - rabbitmq
+    networks:
+      - envoymesh
 
   frontend:
 #    user: 1000:1000
@@ -56,6 +94,14 @@ services:
       POSTGRES_HOST: postgres
     networks:
       - envoymesh
+      
+  rabbitmq:
+    image: docker.io/rabbitmq:3.9.13-management-alpine
+    ports:
+      - 8082:15672
+      - 5672:5672
+    networks:
+      - envoymesh        
 
 volumes:
   postgres_data:
