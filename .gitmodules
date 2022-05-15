@@ -1,7 +1,0 @@
-[submodule "backend"]
-	path = backend
-	url = git@github.com:codeybear/product-factory-backend.git
-[submodule "frontend"]
-	path = frontend
-	url = git@github.com:codeybear/product-factory-frontend.git
-	branch = main
